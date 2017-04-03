@@ -14,6 +14,7 @@
 void drawRedRectangleAroundDate(cv::Mat &imgOriginalScene, PossibleDate &likelyDate);
 void writeLicenseDateCharsOnImage(cv::Mat &imgOriginalScene, PossibleDate &likelyDate);
 
+
 int main() {
 
 	bool blnKNNTrainingSuccessful = loadKNNDataAndTrainKNN();           // attempt KNN training

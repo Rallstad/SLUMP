@@ -15,7 +15,7 @@
 const int MIN_PIXEL_WIDTH = 2;
 const int MIN_PIXEL_HEIGHT = 8;
 
-const double MIN_ASPECT_RATIO = 0.25;
+const double MIN_ASPECT_RATIO = 0.2;
 const double MAX_ASPECT_RATIO = 1.0;
 
 const int MIN_PIXEL_AREA = 80;

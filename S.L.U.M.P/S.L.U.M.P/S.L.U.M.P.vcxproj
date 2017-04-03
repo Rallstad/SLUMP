@@ -40,7 +40,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -115,12 +115,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Classification.cpp" />
+    <ClCompile Include="DetectChars.cpp" />
+    <ClCompile Include="DetectText.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PossibleChar.cpp" />
+    <ClCompile Include="PreProcess.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Classification.h" />
+    <ClInclude Include="DetectChars.h" />
+    <ClInclude Include="DetectText.h" />
     <ClInclude Include="parameters.h" />
     <ClInclude Include="PossibleChar.h" />
+    <ClInclude Include="PossibleDate.h" />
+    <ClInclude Include="PreProcess.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

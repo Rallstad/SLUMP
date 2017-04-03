@@ -21,12 +21,39 @@
     <ClCompile Include="PossibleChar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DetectChars.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Classification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DetectText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PreProcess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parameters.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="PossibleChar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PossibleDate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DetectText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DetectChars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Classification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PreProcess.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

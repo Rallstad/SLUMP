@@ -5,9 +5,9 @@
 #include<opencv2/imgproc/imgproc.hpp>
 
 // global variables ///////////////////////////////////////////////////////////////////////////////
-const cv::Size GAUSSIAN_SMOOTH_FILTER_SIZE = cv::Size(5, 5);
-const int ADAPTIVE_THRESH_BLOCK_SIZE = 19;
-const int ADAPTIVE_THRESH_WEIGHT = 9;
+const cv::Size GAUSSIAN_SMOOTH_FILTER_SIZE = cv::Size(13, 17);
+const int ADAPTIVE_THRESH_BLOCK_SIZE = 61;
+const int ADAPTIVE_THRESH_WEIGHT = 6;
 
 // function prototypes ////////////////////////////////////////////////////////////////////////////
 

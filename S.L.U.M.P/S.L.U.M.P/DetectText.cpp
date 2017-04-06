@@ -111,7 +111,8 @@ std::vector<PossibleChar> findPossibleCharsInScene(cv::Mat &imgThresh) {
 	int intCountOfPossibleChars = 0;
 
 	cv::Mat imgThreshCopy = imgThresh.clone();
-
+	//cv::erode(imgThreshCopy, imgThreshCopy, cv::Mat());
+	//cv::dilate(imgThreshCopy, imgThreshCopy,kernel);
 	std::vector<std::vector<cv::Point> > contours;
 
 	cv::findContours(imgThreshCopy, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);        // find all contours
@@ -132,9 +133,10 @@ std::vector<PossibleChar> findPossibleCharsInScene(cv::Mat &imgThresh) {
 	std::cout << std::endl << "contours.size() = " << contours.size() << std::endl;                         // 2362 with MCLRNF1 image
 	std::cout << "step 2 - intCountOfValidPossibleChars = " << intCountOfPossibleChars << std::endl;        // 131 with MCLRNF1 image
 	cv::imshow("2a", imgContours);
+	cv::waitKey(0);
 #endif	// SHOW_STEPS
 
-	return(vectorOfPossibleChars);
+ 	return(vectorOfPossibleChars);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

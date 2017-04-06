@@ -11,12 +11,13 @@
 #include "DetectChars.h"
 #include "DetectText.h"
 #include "PossibleDate.h"
+#include "PostProcess.h"
 void drawRedRectangleAroundDate(cv::Mat &imgOriginalScene, PossibleDate &likelyDate);
 void writeLicenseDateCharsOnImage(cv::Mat &imgOriginalScene, PossibleDate &likelyDate);
 
 
 int main() {
-
+   
 	bool blnKNNTrainingSuccessful = loadKNNDataAndTrainKNN();           // attempt KNN training
 
 	if (blnKNNTrainingSuccessful == false) {                            // if KNN training was not successful
@@ -30,7 +31,7 @@ int main() {
 
 	double factor = 0;
 
-	src = cv::imread("Images/Dato_Melk.jpg", CV_LOAD_IMAGE_COLOR);   // Read the file
+	src = cv::imread("Images/test5.png", CV_LOAD_IMAGE_COLOR);   // Read the file
 	if (src.size().height < src.size().width) {
 		factor = (1000 / ((double)src.size().width));
 		//cout << "width: " << factor << endl;
@@ -54,35 +55,52 @@ int main() {
 	cv::imshow("imgOriginalScene", imgOriginalScene);           // show scene image
 
 	if (vectorOfPossibleDates.empty()) {                                               // if no Dates were found
-		std::cout << std::endl << "no license Dates were detected" << std::endl;       // inform user no Dates were found
+		std::cout << std::endl << "no Dates were detected" << std::endl;       // inform user no Dates were found
 	}
 	else {                                                                            // else
 																					  // if we get in here vector of possible Dates has at leat one Date
 
 																					  // sort the vector of possible Dates in DESCENDING order (most number of chars to least number of chars)
 		std::sort(vectorOfPossibleDates.begin(), vectorOfPossibleDates.end(), PossibleDate::sortDescendingByNumberOfChars);
-
+		std::reverse(vectorOfPossibleDates.begin(), vectorOfPossibleDates.end());
+		for (auto it = vectorOfPossibleDates.begin(); it != vectorOfPossibleDates.end(); ++it) {
+			it->strChars = convertIsToOnes(it->strChars);
+		}
 		// suppose the Date with the most recognized chars (the first Date in sorted by string length descending order) is the actual Date
-		PossibleDate likelyDate = vectorOfPossibleDates.front();
+		PossibleDate likelyDate;
+		bool dateValid = false;
+		while (!vectorOfPossibleDates.empty() && !dateValid) {
+			likelyDate = vectorOfPossibleDates.back();
+			dateValid = checkLength(likelyDate.strChars) && checkIfValidDate(likelyDate.strChars);
+			likelyDate = vectorOfPossibleDates.back();
+			vectorOfPossibleDates.pop_back();
+		}
+
+			
+		//PossibleDate likelyDate = vectorOfPossibleDates.front();
+		//likelyDate.strChars = convertIsToOnes(likelyDate.strChars);
 
 		cv::imshow("imgDate", likelyDate.imgDate);            // show crop of Date and threshold of Date
 		cv::imshow("imgThresh", likelyDate.imgThresh);
-
 		if (likelyDate.strChars.length() == 0) {                                                     // if no chars were found in the Date
 			std::cout << std::endl << "no characters were detected" << std::endl << std::endl;      // show message
 			return(0);                                                                              // and exit program
 		}
+		if (dateValid) {
+			drawRedRectangleAroundDate(imgOriginalScene, likelyDate);                // draw red rectangle around Date
 
-		drawRedRectangleAroundDate(imgOriginalScene, likelyDate);                // draw red rectangle around Date
+			std::cout << std::endl << "Date read from image = " << likelyDate.strChars << std::endl;     // write license Date text to std out
+			std::cout << std::endl << "-----------------------------------------" << std::endl;
 
-		std::cout << std::endl << "license Date read from image = " << likelyDate.strChars << std::endl;     // write license Date text to std out
-		std::cout << std::endl << "-----------------------------------------" << std::endl;
+			writeLicenseDateCharsOnImage(imgOriginalScene, likelyDate);              // write license Date text on the image
 
-		writeLicenseDateCharsOnImage(imgOriginalScene, likelyDate);              // write license Date text on the image
+			cv::imshow("imgOriginalScene", imgOriginalScene);                       // re-show scene image
 
-		cv::imshow("imgOriginalScene", imgOriginalScene);                       // re-show scene image
-
-		cv::imwrite("imgOriginalScene.png", imgOriginalScene);                  // write image out to file
+			cv::imwrite("imgOriginalScene.png", imgOriginalScene);                  // write image out to file
+		}
+		else {
+			std::cout << "No valid date found" << std::endl;
+		}
 	}
 
 	cv::waitKey(0);                 // hold windows open until user presses a key

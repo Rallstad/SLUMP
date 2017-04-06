@@ -120,6 +120,7 @@
     <ClCompile Include="DetectText.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PossibleChar.cpp" />
+    <ClCompile Include="PostProcess.cpp" />
     <ClCompile Include="PreProcess.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +130,7 @@
     <ClInclude Include="parameters.h" />
     <ClInclude Include="PossibleChar.h" />
     <ClInclude Include="PossibleDate.h" />
+    <ClInclude Include="PostProcess.h" />
     <ClInclude Include="PreProcess.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

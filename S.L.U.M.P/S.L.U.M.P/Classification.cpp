@@ -11,8 +11,7 @@ bool loadKNNDataAndTrainKNN(void) {
 	cv::Mat matClassificationInts;              // we will read the classification numbers into this variable as though it is a vector
 
 	cv::FileStorage fsClassifications("classifications.xml", cv::FileStorage::READ);        // open the classifications file
-
-	if (fsClassifications.isOpened() == false) {                                                        // if the file was not opened successfully
+    if (fsClassifications.isOpened() == false) {                                                        // if the file was not opened successfully
 		std::cout << "error, unable to open training classifications file, exiting program\n\n";        // show error message
 		return(false);                                                                                  // and exit program
 	}

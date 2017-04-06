@@ -44,7 +44,7 @@ std::vector<PossibleDate> detectTextInScene(cv::Mat &imgOriginalScene) {
 #endif	// SHOW_STEPS
 
 	// given a vector of all possible chars, find groups of matching chars
-	// in the next steps each group of matching chars will attempt to be recognized as a Date
+	// in the next steps each group of matching chars will attempt to be recognized as a date
 	std::vector<std::vector<PossibleChar> > vectorOfVectorsOfMatchingCharsInScene = findVectorOfVectorsOfMatchingChars(vectorOfPossibleCharsInScene);
 
 #ifdef SHOW_STEPS
@@ -68,14 +68,14 @@ std::vector<PossibleDate> detectTextInScene(cv::Mat &imgOriginalScene) {
 #endif	// SHOW_STEPS
 
 	for (auto &vectorOfMatchingChars : vectorOfVectorsOfMatchingCharsInScene) {                     // for each group of matching chars
-		PossibleDate PossibleDate = extractDate(imgOriginalScene, vectorOfMatchingChars);        // attempt to extract Date
+		PossibleDate PossibleDate = extractDate(imgOriginalScene, vectorOfMatchingChars);        // attempt to extract date
 
-		if (PossibleDate.imgDate.empty() == false) {                                              // if Date was found
-			vectorOfPossibleDates.push_back(PossibleDate);                                        // add to vector of possible Dates
+		if (PossibleDate.imgDate.empty() == false) {                                              // if date was found
+			vectorOfPossibleDates.push_back(PossibleDate);                                        // add to vector of possible dates
 		}
 	}
 
-	std::cout << std::endl << vectorOfPossibleDates.size() << " possible Dates found" << std::endl;       // 13 with MCLRNF1 image
+	std::cout << std::endl << vectorOfPossibleDates.size() << " possible dates found" << std::endl;       // 13 with MCLRNF1 image
 
 #ifdef SHOW_STEPS
 	std::cout << std::endl;
@@ -91,12 +91,12 @@ std::vector<PossibleDate> detectTextInScene(cv::Mat &imgOriginalScene) {
 		}
 		cv::imshow("4a", imgContours);
 
-		std::cout << "possible Date " << i << ", click on any image and press a key to continue . . ." << std::endl;
+		std::cout << "possible date " << i << ", click on any image and press a key to continue . . ." << std::endl;
 
 		cv::imshow("4b", vectorOfPossibleDates[i].imgDate);
 		cv::waitKey(0);
 	}
-	std::cout << std::endl << "Date detection complete, click on any image and press a key to begin char recognition . . ." << std::endl << std::endl;
+	std::cout << std::endl << "date detection complete, click on any image and press a key to begin char recognition . . ." << std::endl << std::endl;
 	cv::waitKey(0);
 #endif	// SHOW_STEPS
 
@@ -144,12 +144,12 @@ PossibleDate extractDate(cv::Mat &imgOriginal, std::vector<PossibleChar> &vector
 											// sort chars from left to right based on x position
 	std::sort(vectorOfMatchingChars.begin(), vectorOfMatchingChars.end(), PossibleChar::sortCharsLeftToRight);
 
-	// calculate the center point of the Date
+	// calculate the center point of the date
 	double dblDateCenterX = (double)(vectorOfMatchingChars[0].intCenterX + vectorOfMatchingChars[vectorOfMatchingChars.size() - 1].intCenterX) / 2.0;
 	double dblDateCenterY = (double)(vectorOfMatchingChars[0].intCenterY + vectorOfMatchingChars[vectorOfMatchingChars.size() - 1].intCenterY) / 2.0;
 	cv::Point2d p2dDateCenter(dblDateCenterX, dblDateCenterY);
 
-	// calculate Date width and height
+	// calculate date width and height
 	int intDateWidth = (int)((vectorOfMatchingChars[vectorOfMatchingChars.size() - 1].boundingRect.x + vectorOfMatchingChars[vectorOfMatchingChars.size() - 1].boundingRect.width - vectorOfMatchingChars[0].boundingRect.x) * DATE_WIDTH_PADDING_FACTOR);
 
 	double intTotalOfCharHeights = 0;
@@ -162,13 +162,13 @@ PossibleDate extractDate(cv::Mat &imgOriginal, std::vector<PossibleChar> &vector
 
 	int intDateHeight = (int)(dblAverageCharHeight * DATE_HEIGHT_PADDING_FACTOR);
 
-	// calculate correction angle of Date region
+	// calculate correction angle of date region
 	double dblOpposite = vectorOfMatchingChars[vectorOfMatchingChars.size() - 1].intCenterY - vectorOfMatchingChars[0].intCenterY;
 	double dblHypotenuse = distanceBetweenChars(vectorOfMatchingChars[0], vectorOfMatchingChars[vectorOfMatchingChars.size() - 1]);
 	double dblCorrectionAngleInRad = asin(dblOpposite / dblHypotenuse);
 	double dblCorrectionAngleInDeg = dblCorrectionAngleInRad * (180.0 / CV_PI);
 
-	// assign rotated rect member variable of possible Date
+	// assign rotated rect member variable of possible date
 	PossibleDate.rrLocationOfDateInScene = cv::RotatedRect(p2dDateCenter, cv::Size2f((float)intDateWidth, (float)intDateHeight), (float)dblCorrectionAngleInDeg);
 
 	cv::Mat rotationMatrix;             // final steps are to perform the actual rotation
@@ -179,10 +179,10 @@ PossibleDate extractDate(cv::Mat &imgOriginal, std::vector<PossibleChar> &vector
 
 	cv::warpAffine(imgOriginal, imgRotated, rotationMatrix, imgOriginal.size());            // rotate the entire image
 
-																							// crop out the actual Date portion of the rotated image
+																							// crop out the actual date portion of the rotated image
 	cv::getRectSubPix(imgRotated, PossibleDate.rrLocationOfDateInScene.size, PossibleDate.rrLocationOfDateInScene.center, imgCropped);
 
-	PossibleDate.imgDate = imgCropped;            // copy the cropped Date image into the applicable member variable of the possible Date
+	PossibleDate.imgDate = imgCropped;            // copy the cropped date image into the applicable member variable of the possible date
 
 	return(PossibleDate);
 }

@@ -1,10 +1,11 @@
+#include<iostream>
 #include<opencv2/core/core.hpp>
 #include<opencv2/highgui/highgui.hpp>
 #include<opencv2/imgproc/imgproc.hpp>
 
 
-#include<iostream>
-#include<conio.h>           // may have to modify this line if not using Windows
+
+//#include<conio.h>           // may have to modify this line if not using Windows
 
 #include "parameters.h"
 #include "Classification.h"
@@ -12,7 +13,7 @@
 #include "DetectText.h"
 #include "PossibleDate.h"
 void drawRedRectangleAroundDate(cv::Mat &imgOriginalScene, PossibleDate &likelyDate);
-void writeLicenseDateCharsOnImage(cv::Mat &imgOriginalScene, PossibleDate &likelyDate);
+void writeDateCharsOnImage(cv::Mat &imgOriginalScene, PossibleDate &likelyDate);
 
 
 int main() {
@@ -44,41 +45,41 @@ int main() {
 
 	if (imgOriginalScene.empty()) {                             // if unable to open image
 		std::cout << "error: image not read from file\n\n";     // show error message on command line
-		_getch();                                               // may have to modify this line if not using Windows
+//		_getch();                                               // may have to modify this line if not using Windows
 		return(0);                                              // and exit program
 	}
-	std::vector<PossibleDate> vectorOfPossibleDates = detectTextInScene(imgOriginalScene);          // detect Dates
+	std::vector<PossibleDate> vectorOfPossibleDates = detectTextInScene(imgOriginalScene);          // detect dates
 
-	vectorOfPossibleDates = detectCharsInDates(vectorOfPossibleDates);                               // detect chars in Dates
+	vectorOfPossibleDates = detectCharsInDates(vectorOfPossibleDates);                               // detect chars in dates
 
 	cv::imshow("imgOriginalScene", imgOriginalScene);           // show scene image
 
-	if (vectorOfPossibleDates.empty()) {                                               // if no Dates were found
-		std::cout << std::endl << "no license Dates were detected" << std::endl;       // inform user no Dates were found
+	if (vectorOfPossibleDates.empty()) {                                               // if no dates were found
+		std::cout << std::endl << "No dates were detected" << std::endl;       // inform user no dates were found
 	}
 	else {                                                                            // else
-																					  // if we get in here vector of possible Dates has at leat one Date
+																					  // if we get in here vector of possible dates has at leat one Date
 
-																					  // sort the vector of possible Dates in DESCENDING order (most number of chars to least number of chars)
+																					  // sort the vector of possible dates in DESCENDING order (most number of chars to least number of chars)
 		std::sort(vectorOfPossibleDates.begin(), vectorOfPossibleDates.end(), PossibleDate::sortDescendingByNumberOfChars);
 
-		// suppose the Date with the most recognized chars (the first Date in sorted by string length descending order) is the actual Date
+		// suppose the Date with the most recognized chars (the first date in sorted by string length descending order) is the actual date
 		PossibleDate likelyDate = vectorOfPossibleDates.front();
 
-		cv::imshow("imgDate", likelyDate.imgDate);            // show crop of Date and threshold of Date
+		cv::imshow("imgDate", likelyDate.imgDate);            // show crop of date and threshold of date
 		cv::imshow("imgThresh", likelyDate.imgThresh);
 
-		if (likelyDate.strChars.length() == 0) {                                                     // if no chars were found in the Date
+		if (likelyDate.strChars.length() == 0) {                                                     // if no chars were found in the date
 			std::cout << std::endl << "no characters were detected" << std::endl << std::endl;      // show message
 			return(0);                                                                              // and exit program
 		}
 
-		drawRedRectangleAroundDate(imgOriginalScene, likelyDate);                // draw red rectangle around Date
+		drawRedRectangleAroundDate(imgOriginalScene, likelyDate);                // draw red rectangle around date
 
-		std::cout << std::endl << "license Date read from image = " << likelyDate.strChars << std::endl;     // write license Date text to std out
+		std::cout << std::endl << "date read from image = " << likelyDate.strChars << std::endl;     // write date text to std out
 		std::cout << std::endl << "-----------------------------------------" << std::endl;
 
-		writeLicenseDateCharsOnImage(imgOriginalScene, likelyDate);              // write license Date text on the image
+		writeDateCharsOnImage(imgOriginalScene, likelyDate);              // write date text on the image
 
 		cv::imshow("imgOriginalScene", imgOriginalScene);                       // re-show scene image
 
@@ -102,25 +103,25 @@ void drawRedRectangleAroundDate(cv::Mat &imgOriginalScene, PossibleDate &likelyD
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void writeLicenseDateCharsOnImage(cv::Mat &imgOriginalScene, PossibleDate &likelyDate) {
+void writeDateCharsOnImage(cv::Mat &imgOriginalScene, PossibleDate &likelyDate) {
 	cv::Point ptCenterOfTextArea;                   // this will be the center of the area the text will be written to
 	cv::Point ptLowerLeftTextOrigin;                // this will be the bottom left of the area that the text will be written to
 
 	int intFontFace = CV_FONT_HERSHEY_SIMPLEX;                              // choose a plain jane font
-	double dblFontScale = (double)likelyDate.imgDate.rows / 30.0;            // base font scale on height of Date area
+	double dblFontScale = (double)likelyDate.imgDate.rows / 30.0;            // base font scale on height of date area
 	int intFontThickness = (int)std::round(dblFontScale * 1.5);             // base font thickness on font scale
 	int intBaseline = 0;
 
 	cv::Size textSize = cv::getTextSize(likelyDate.strChars, intFontFace, dblFontScale, intFontThickness, &intBaseline);      // call getTextSize
 
-	ptCenterOfTextArea.x = (int)likelyDate.rrLocationOfDateInScene.center.x;         // the horizontal location of the text area is the same as the Date
+	ptCenterOfTextArea.x = (int)likelyDate.rrLocationOfDateInScene.center.x;         // the horizontal location of the text area is the same as the date
 
-	if (likelyDate.rrLocationOfDateInScene.center.y < (imgOriginalScene.rows * 0.75)) {      // if the license Date is in the upper 3/4 of the image
-																							// write the chars in below the Date
+	if (likelyDate.rrLocationOfDateInScene.center.y < (imgOriginalScene.rows * 0.75)) {      // if the date is in the upper 3/4 of the image
+																							// write the chars in below the date
 		ptCenterOfTextArea.y = (int)std::round(likelyDate.rrLocationOfDateInScene.center.y) + (int)std::round((double)likelyDate.imgDate.rows * 1.6);
 	}
-	else {                                                                                // else if the license Date is in the lower 1/4 of the image
-																						  // write the chars in above the Date
+	else {                                                                                // else if the date is in the lower 1/4 of the image
+																						  // write the chars in above the date
 		ptCenterOfTextArea.y = (int)std::round(likelyDate.rrLocationOfDateInScene.center.y) - (int)std::round((double)likelyDate.imgDate.rows * 1.6);
 	}
 

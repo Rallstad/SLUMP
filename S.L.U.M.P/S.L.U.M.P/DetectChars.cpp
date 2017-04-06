@@ -11,12 +11,12 @@ std::vector<PossibleDate> detectCharsInDates(std::vector<PossibleDate> &vectorOf
 	std::vector<std::vector<cv::Point> > contours;
 	cv::RNG rng;
 
-	if (vectorOfPossibleDates.empty()) {               // if vector of possible Dates is empty
+	if (vectorOfPossibleDates.empty()) {               // if vector of possible dates is empty
 		return(vectorOfPossibleDates);                 // return
 	}
-	// at this point we can be sure vector of possible Dates has at least one Date
+	// at this point we can be sure vector of possible dates has at least one date
 
-	for (auto &PossibleDate : vectorOfPossibleDates) {            // for each possible Date, this is a big for loop that takes up most of the function
+	for (auto &PossibleDate : vectorOfPossibleDates) {            // for each possible date, this is a big for loop that takes up most of the function
 
 		preprocess(PossibleDate.imgDate, PossibleDate.imgGrayscale, PossibleDate.imgThresh);        // preprocess to get grayscale and threshold images
 
@@ -36,7 +36,7 @@ std::vector<PossibleDate> detectCharsInDates(std::vector<PossibleDate> &vectorOf
 		cv::imshow("5d", PossibleDate.imgThresh);
 #endif	// SHOW_STEPS
 
-		// find all possible chars in the Date,
+		// find all possible chars in the date,
 		// this function first finds all contours, then only includes contours that could be chars (without comparison to other chars yet)
 		std::vector<PossibleChar> vectorOfPossibleCharsInDate = findPossibleCharsInDate(PossibleDate.imgGrayscale, PossibleDate.imgThresh);
 
@@ -53,7 +53,7 @@ std::vector<PossibleDate> detectCharsInDates(std::vector<PossibleDate> &vectorOf
 		cv::imshow("6", imgContours);
 #endif	// SHOW_STEPS
 
-		// given a vector of all possible chars, find groups of matching chars within the Date
+		// given a vector of all possible chars, find groups of matching chars within the date
 		std::vector<std::vector<PossibleChar> > vectorOfVectorsOfMatchingCharsInDate = findVectorOfVectorsOfMatchingChars(vectorOfPossibleCharsInDate);
 
 #ifdef SHOW_STEPS
@@ -74,20 +74,20 @@ std::vector<PossibleDate> detectCharsInDates(std::vector<PossibleDate> &vectorOf
 		cv::imshow("7", imgContours);
 #endif	// SHOW_STEPS
 
-		if (vectorOfVectorsOfMatchingCharsInDate.size() == 0) {                // if no groups of matching chars were found in the Date
+		if (vectorOfVectorsOfMatchingCharsInDate.size() == 0) {                // if no groups of matching chars were found in the date
 #ifdef SHOW_STEPS
-			std::cout << "chars found in Date number " << intDateCounter << " = (none), click on any image and press a key to continue . . ." << std::endl;
+			std::cout << "chars found in date number " << intDateCounter << " = (none), click on any image and press a key to continue . . ." << std::endl;
 			intDateCounter++;
 			cv::destroyWindow("8");
 			cv::destroyWindow("9");
 			cv::destroyWindow("10");
 			cv::waitKey(0);
 #endif	// SHOW_STEPS
-			PossibleDate.strChars = "";            // set Date string member variable to empty string
+			PossibleDate.strChars = "";            // set date string member variable to empty string
 			continue;                               // go back to top of for loop
 		}
 
-		for (auto &vectorOfMatchingChars : vectorOfVectorsOfMatchingCharsInDate) {                                         // for each vector of matching chars in the current Date
+		for (auto &vectorOfMatchingChars : vectorOfVectorsOfMatchingCharsInDate) {                                         // for each vector of matching chars in the current date
 			std::sort(vectorOfMatchingChars.begin(), vectorOfMatchingChars.end(), PossibleChar::sortCharsLeftToRight);      // sort the chars left to right
 			vectorOfMatchingChars = removeInnerOverlappingChars(vectorOfMatchingChars);                                     // and eliminate any overlapping chars
 		}
@@ -110,7 +110,7 @@ std::vector<PossibleDate> detectCharsInDates(std::vector<PossibleDate> &vectorOf
 		cv::imshow("8", imgContours);
 #endif	// SHOW_STEPS
 
-		// within each possible Date, suppose the longest vector of potential matching chars is the actual vector of chars
+		// within each possible date, suppose the longest vector of potential matching chars is the actual vector of chars
 		unsigned int intLenOfLongestVectorOfChars = 0;
 		unsigned int intIndexOfLongestVectorOfChars = 0;
 		// loop through all the vectors of matching chars, get the index of the one with the most chars
@@ -120,7 +120,7 @@ std::vector<PossibleDate> detectCharsInDates(std::vector<PossibleDate> &vectorOf
 				intIndexOfLongestVectorOfChars = i;
 			}
 		}
-		// suppose that the longest vector of matching chars within the Date is the actual vector of chars
+		// suppose that the longest vector of matching chars within the date is the actual vector of chars
 		std::vector<PossibleChar> longestVectorOfMatchingCharsInDate = vectorOfVectorsOfMatchingCharsInDate[intIndexOfLongestVectorOfChars];
 
 #ifdef SHOW_STEPS
@@ -136,16 +136,20 @@ std::vector<PossibleDate> detectCharsInDates(std::vector<PossibleDate> &vectorOf
 		cv::imshow("9", imgContours);
 #endif	// SHOW_STEPS
 
-		// perform char recognition on the longest vector of matching chars in the Date
+		// perform char recognition on the longest vector of matching chars in the date
 		PossibleDate.strChars = recognizeCharsInDate(PossibleDate.imgThresh, longestVectorOfMatchingCharsInDate);
 
 #ifdef SHOW_STEPS
+<<<<<<< HEAD
 		std::cout << "chars found in Date number " << intDateCounter << " = " << PossibleDate.strChars << ", click on any image and press a key to continue . . ." << std::endl; 
+=======
+		std::cout << "chars found in date number " << intDateCounter << " = " << PossibleDate.strChars << ", click on any image and press a key to continue . . ." << std::endl;
+>>>>>>> 46e2ec05300efd898c93e58724ea07e1831f98f1
 		intDateCounter++;
 		cv::waitKey(0);
 #endif	// SHOW_STEPS
 
-	}   // end for each possible Date big for loop that takes up most of the function
+	}   // end for each possible date big for loop that takes up most of the function
 
 #ifdef SHOW_STEPS
 	std::cout << std::endl << "char detection complete, click on any image and press a key to continue . . ." << std::endl;
@@ -165,7 +169,7 @@ std::vector<PossibleChar> findPossibleCharsInDate(cv::Mat &imgGrayscale, cv::Mat
 
 	imgThreshCopy = imgThresh.clone();				// make a copy of the thresh image, this in necessary b/c findContours modifies the image
 
-	cv::findContours(imgThreshCopy, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);        // find all contours in Date
+	cv::findContours(imgThreshCopy, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);        // find all contours in date
 
 	for (auto &contour : contours) {                            // for each contour
 		PossibleChar possibleChar(contour);
@@ -206,10 +210,10 @@ std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const
 
 		vectorOfMatchingChars.push_back(possibleChar);          // also add the current char to current possible vector of matching chars
 
-																// if current possible vector of matching chars is not long enough to constitute a possible Date
+																// if current possible vector of matching chars is not long enough to constitute a possible date
 		if (vectorOfMatchingChars.size() < MIN_NUMBER_OF_MATCHING_CHARS) {
 			continue;                       // jump back to the top of the for loop and try again with next char, note that it's not necessary
-											// to save the vector in any way since it did not have enough chars to be a possible Date
+											// to save the vector in any way since it did not have enough chars to be a possible date
 		}
 		// if we get here, the current vector passed test as a "group" or "cluster" of matching chars
 		vectorOfVectorsOfMatchingChars.push_back(vectorOfMatchingChars);            // so add to our vector of vectors of matching chars
@@ -337,7 +341,7 @@ std::vector<PossibleChar> removeInnerOverlappingChars(std::vector<PossibleChar> 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // this is where we apply the actual char recognition
 std::string recognizeCharsInDate(cv::Mat &imgThresh, std::vector<PossibleChar> &vectorOfMatchingChars) {
-	std::string strChars;               // this will be the return value, the chars in the lic Date
+	std::string strChars;               // this will be the return value, the chars in the date
 
 	cv::Mat imgThreshColor;
 
@@ -346,7 +350,7 @@ std::string recognizeCharsInDate(cv::Mat &imgThresh, std::vector<PossibleChar> &
 
 	cv::cvtColor(imgThresh, imgThreshColor, CV_GRAY2BGR);       // make color version of threshold image so we can draw contours in color on it
 
-	for (auto &currentChar : vectorOfMatchingChars) {           // for each char in Date
+	for (auto &currentChar : vectorOfMatchingChars) {           // for each char in date
 		cv::rectangle(imgThreshColor, currentChar.boundingRect, SCALAR_GREEN, 2);       // draw green box around the char
 
 		cv::Mat imgROItoBeCloned = imgThresh(currentChar.boundingRect);                 // get ROI image of bounding rect

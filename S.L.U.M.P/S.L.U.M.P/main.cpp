@@ -76,10 +76,6 @@ int main() {
 			vectorOfPossibleDates.pop_back();
 		}
 
-			
-		//PossibleDate likelyDate = vectorOfPossibleDates.front();
-		//likelyDate.strChars = convertIsToOnes(likelyDate.strChars);
-
 		cv::imshow("imgDate", likelyDate.imgDate);            // show crop of Date and threshold of Date
 		cv::imshow("imgThresh", likelyDate.imgThresh);
 		if (likelyDate.strChars.length() == 0) {                                                     // if no chars were found in the Date

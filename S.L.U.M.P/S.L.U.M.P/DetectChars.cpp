@@ -140,11 +140,10 @@ std::vector<PossibleDate> detectCharsInDates(std::vector<PossibleDate> &vectorOf
 		PossibleDate.strChars = recognizeCharsInDate(PossibleDate.imgThresh, longestVectorOfMatchingCharsInDate);
 
 #ifdef SHOW_STEPS
-<<<<<<< HEAD
 		std::cout << "chars found in Date number " << intDateCounter << " = " << PossibleDate.strChars << ", click on any image and press a key to continue . . ." << std::endl; 
-=======
+
 		std::cout << "chars found in date number " << intDateCounter << " = " << PossibleDate.strChars << ", click on any image and press a key to continue . . ." << std::endl;
->>>>>>> 46e2ec05300efd898c93e58724ea07e1831f98f1
+
 		intDateCounter++;
 		cv::waitKey(0);
 #endif	// SHOW_STEPS

@@ -31,7 +31,7 @@ int main() {
 
 	double factor = 0;
 
-	src = cv::imread("Images/test5.png", CV_LOAD_IMAGE_COLOR);   // Read the file
+	src = cv::imread("Images/Dato_melk.jpg", CV_LOAD_IMAGE_COLOR);   // Read the file
 	if (src.size().height < src.size().width) {
 		factor = (1000 / ((double)src.size().width));
 		//cout << "width: " << factor << endl;
@@ -80,6 +80,7 @@ int main() {
 		cv::imshow("imgThresh", likelyDate.imgThresh);
 		if (likelyDate.strChars.length() == 0) {                                                     // if no chars were found in the Date
 			std::cout << std::endl << "no characters were detected" << std::endl << std::endl;      // show message
+			cv::waitKey(0);
 			return(0);                                                                              // and exit program
 		}
 		if (dateValid) {

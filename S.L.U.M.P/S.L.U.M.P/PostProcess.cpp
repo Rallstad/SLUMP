@@ -55,7 +55,7 @@ bool checkIfValidDate(std::string possibleDate) {
         }
         else{
             std::cout <<"This you can consume! Don't even worry"<<std::endl;
-        }1
+        }
 
     }
     else{

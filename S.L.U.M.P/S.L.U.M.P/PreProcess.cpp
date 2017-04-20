@@ -1,4 +1,7 @@
 #include "Preprocess.h"
+#include <ctime>
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void preprocess(cv::Mat &imgOriginal, cv::Mat &imgGrayscale, cv::Mat &imgThresh) {

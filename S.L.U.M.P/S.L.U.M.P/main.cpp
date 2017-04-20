@@ -48,14 +48,14 @@ int main() {
      //   _getch();                                               // may have to modify this line if not using Windows
         return(0);                                              // and exit program
     }
-    std::vector<PossibleDate> vectorOfPossibleDates = detectTextInScene(imgOriginalScene);          // detect Dates
+    std::vector<PossibleDate> vectorOfPossibleDates = detectTextInScene(imgOriginalScene);          // detect dates
     std::vector<PossibleDate> vectorOfValidDates;
-    vectorOfPossibleDates = detectCharsInDates(vectorOfPossibleDates);                               // detect chars in Dates
+    vectorOfPossibleDates = detectCharsInDates(vectorOfPossibleDates);                               // detect chars in dates
     
     cv::imshow("imgOriginalScene", imgOriginalScene);           // show scene image
     
-    if (vectorOfPossibleDates.empty()) {                                               // if no Dates were found
-        std::cout << std::endl << "no Dates were detected" << std::endl;       // inform user no Dates were found
+    if (vectorOfPossibleDates.empty()) {                                               // if no dates were found
+        std::cout << std::endl << "no Dates were detected" << std::endl;       // inform user no dates were found
     }
     else {                                                                            // else
         // if we get in here vector of possible Dates has at leat one Date
@@ -75,12 +75,11 @@ int main() {
             if(dateValid){
                 vectorOfValidDates.push_back(likelyDate);
             }
-            likelyDate = vectorOfPossibleDates.back();
             vectorOfPossibleDates.pop_back();
         }
         
         double largestWidth = 0;
-        if (vectorOfValidDates.size() > 1) {
+        if (vectorOfValidDates.size() >= 1) {
             for (auto it = vectorOfValidDates.begin(); it != vectorOfValidDates.end(); ++it) {
                 if(largestWidth < it->rrLocationOfDateInScene.size.width){
                     largestWidth = it->rrLocationOfDateInScene.size.width;
@@ -90,7 +89,7 @@ int main() {
             }
         }
         
-        cv::imshow("imgDate", likelyDate.imgDate);            // show crop of Date and threshold of Date
+        cv::imshow("imgDate", likelyDate.imgDate);            // show crop of date and threshold of Date
         cv::imshow("imgThresh", likelyDate.imgThresh);
         if (likelyDate.strChars.length() == 0) {                                                     // if no chars were found in the Date
             std::cout << std::endl << "no characters were detected" << std::endl << std::endl;      // show message
@@ -99,10 +98,10 @@ int main() {
         if (dateValid) {
             drawRedRectangleAroundDate(imgOriginalScene, likelyDate);                // draw red rectangle around Date
             
-            std::cout << std::endl << "Date read from image = " << likelyDate.strChars << std::endl;     // write license Date text to std out
+            std::cout << std::endl << "Date read from image = " << likelyDate.strChars << std::endl;     // write date text to std out
             std::cout << std::endl << "-----------------------------------------" << std::endl;
             
-            writeLicenseDateCharsOnImage(imgOriginalScene, likelyDate);              // write license Date text on the image
+            writeLicenseDateCharsOnImage(imgOriginalScene, likelyDate);              // write date text on the image
             
             cv::imshow("imgOriginalScene", imgOriginalScene);                       // re-show scene image
             

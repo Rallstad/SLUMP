@@ -75,7 +75,7 @@ std::vector<PossibleDate> detectTextInScene(cv::Mat &imgOriginalScene) {
 		}
 	}
 
-	std::cout << std::endl << vectorOfPossibleDates.size() << " possible dates found" << std::endl;       // 13 with MCLRNF1 image
+	std::cout << std::endl << vectorOfPossibleDates.size() << " possible dates found" << std::endl;
 
 #ifdef SHOW_STEPS
 	std::cout << std::endl;
@@ -130,9 +130,9 @@ std::vector<PossibleChar> findPossibleCharsInScene(cv::Mat &imgThresh) {
 	}
 
 #ifdef SHOW_STEPS
-	std::cout << std::endl << "contours.size() = " << contours.size() << std::endl;                         // 2362 with MCLRNF1 image
-	std::cout << "step 2 - intCountOfValidPossibleChars = " << intCountOfPossibleChars << std::endl;        // 131 with MCLRNF1 image
-	cv::imshow("2a", imgContours);
+	std::cout << std::endl << "contours.size() = " << contours.size() << std::endl;
+	std::cout << "step 2 - intCountOfValidPossibleChars = " << intCountOfPossibleChars << std::endl;
+    cv::imshow("2a", imgContours);
 	cv::waitKey(0);
 #endif	// SHOW_STEPS
 

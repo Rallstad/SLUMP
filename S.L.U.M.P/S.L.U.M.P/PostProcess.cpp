@@ -37,8 +37,8 @@ bool checkIfValidDate(std::string possibleDate) {
     <<  now->tm_mday
     << std::endl;
     
-    if(year + 2000 <= now->tm_year){
-        if (month <= now->tm_mon ){
+    if(year + 100 <= now->tm_year){
+        if (month -1 <= now->tm_mon){
             if (day < now->tm_mday){
                 std::cout << "This is expired!" << std::endl;
             }
